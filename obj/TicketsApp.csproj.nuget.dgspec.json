@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Blazor\\TicketsApp\\TicketsApp.csproj": {}
+    "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj": {}
   },
   "projects": {
-    "C:\\Blazor\\TicketsApp\\TicketsApp.csproj": {
+    "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Blazor\\TicketsApp\\TicketsApp.csproj",
+        "projectUniqueName": "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj",
         "projectName": "TicketsApp",
-        "projectPath": "C:\\Blazor\\TicketsApp\\TicketsApp.csproj",
+        "projectPath": "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj",
         "packagesPath": "C:\\Users\\julio\\.nuget\\packages\\",
-        "outputPath": "C:\\Blazor\\TicketsApp\\obj\\",
+        "outputPath": "C:\\Blazor\\TicketsApp - copia\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -43,6 +43,18 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "microsoft.entityframeworkcore.sqlite": {
+              "target": "Package",
+              "version": "[7.0.11, )"
+            },
+            "microsoft.entityframeworkcore.tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.11, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

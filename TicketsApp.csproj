@@ -8,6 +8,15 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Pages\Consultas\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft.entityframeworkcore.sqlite" Version="7.0.11" />
+    <PackageReference Include="microsoft.entityframeworkcore.tools" Version="7.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
