@@ -1,0 +1,85 @@
+﻿@page "/RegistroSistema";
+@page "/RegistroSistema/{SistemaId:int}";
+
+@inject SistemasBLL sistemasBLL;
+
+<EditForm Model="sistemas" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro Sistema</h1>
+        </div>
+        <div class="card-body">
+            <label>ID:</label>
+            <div class="input-group">
+                <InputNumber @bind-Value="sistemas.SistemaId" class="id-input"></InputNumber>
+                <button type="button" class="btn btn-dark oi oi-magnifying-glass" @onclick="Buscar"></button>
+            </div>
+            <div>
+                <label>Nombre:</label>
+                <InputText @bind-Value="sistemas.NombreSistema" class="form-control"></InputText>
+                <ValidationMessage For="@(() => sistemas.NombreSistema)" />
+            </div>
+            <div>
+                <label>Descripcion:</label>
+                <InputText @bind-Value="sistemas.DescripcionSistema" class="form-control"></InputText>
+                <ValidationMessage For="@(() => sistemas.DescripcionSistema)" />
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo <i class="oi oi-file" /></button>
+            <button class="btn btn-success">Guardar <i class="oi oi-document" /></button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar <i class="oi oi-trash" /></button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int SistemaId { get; set; }
+    public Sistemas sistemas = new Sistemas();
+
+    protected override void OnInitialized()
+    {
+        if (SistemaId > 0)
+        {
+            sistemas.SistemaId = SistemaId;
+            Buscar();
+        }
+    }
+    public void Buscar()
+    {
+        var sistemaEncontrado = sistemasBLL.Buscar(sistemas.SistemaId);
+
+        if (sistemaEncontrado != null)
+        {
+            //asignar la instancia si encontramos el ClienteId que buscamos
+            this.sistemas = sistemaEncontrado;
+        }
+        else
+        {
+            //para si no encuentra clientes limpie la pantalla
+            this.Nuevo();
+        }
+    }
+    public bool Validar()
+    {
+        return !string.IsNullOrEmpty(sistemas.NombreSistema) && !string.IsNullOrEmpty(sistemas.DescripcionSistema);
+    }
+    public void Nuevo()
+    {
+        this.sistemas = new Sistemas();
+    }
+    public void Guardar()
+    {
+        if (Validar() && sistemasBLL.Guardar(this.sistemas))
+        {
+            Nuevo();
+        }
+    }
+    public void Eliminar()
+    {
+        sistemasBLL.Eliminar(this.sistemas);
+        Nuevo();
+    }
+}

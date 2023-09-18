@@ -1,0 +1,135 @@
+﻿@page "/RegistroCliente";
+@page "/RegistroCliente/{ClienteId:int}";
+
+@inject ClientesBLL clientesBLL;
+
+<EditForm Model="clientes" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro Cliente</h1>
+        </div>
+        <div class="card-body">
+            <label>ID:</label>
+            <div class="input-group">
+                <InputNumber @bind-Value="clientes.ClienteId" class="id-input"></InputNumber>
+                <button type="button" class="btn btn-dark oi oi-magnifying-glass" @onclick="Buscar"></button>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Nombres:</label>
+                    <InputText @bind-Value="clientes.Nombres" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => clientes.Nombres)" />
+                    @if (nombreExistente)
+                    {
+                        <p class="text-danger">Ya existe un Cliente con estos Nombres.</p>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label>Email:</label>
+                    <InputText type="email" @bind-Value="clientes.Email" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => clientes.Email)" />
+                </div>
+                <div class="col-md-6">
+                    <label>RNC:</label>
+                    <InputText @bind-Value="clientes.Rnc" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => clientes.Rnc)" />
+                    @if (rncExistente)
+                    {
+                        <p class="text-danger">Ya existe un Cliente con este RNC.</p>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label>Direccion:</label>
+                    <InputText @bind-Value="clientes.Direccion" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => clientes.Direccion)" />
+                </div>
+                <div class="col-md-6">
+                    <label>Telefono:</label>
+                    <InputText @bind-Value="clientes.Telefono" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => clientes.Telefono)" />
+                </div>
+                <div class="col-md-6">
+                    <label>Celular:</label>
+                    <InputText @bind-Value="clientes.Celular" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => clientes.Celular)" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo <i class="oi oi-file" /></button>
+            <button class="btn btn-success">Guardar <i class="oi oi-document" /></button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar <i class="oi oi-trash" /></button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int ClienteId { get; set; }
+    public Clientes clientes = new Clientes();
+    private bool nombreExistente = false;
+    private bool rncExistente = false;
+
+    protected override void OnInitialized()
+    {
+        if (ClienteId > 0)
+        {
+            clientes.ClienteId = ClienteId;
+            Buscar();
+        }
+    }
+    public void Buscar()
+    {
+        var clienteEncontrado = clientesBLL.Buscar(clientes.ClienteId);
+
+        if (clienteEncontrado != null)
+        {
+            //asignar la instancia si encontramos el ClienteId que buscamos
+            this.clientes = clienteEncontrado;
+        }
+        else
+        {
+            //para si no encuentra clientes limpie la pantalla
+            this.Nuevo();
+        }
+    }
+    public bool Validar()
+    {
+        nombreExistente = false;
+        rncExistente = false;
+        var ClientesNombres = clientesBLL.Listar(c => c.Nombres == clientes.Nombres && c.ClienteId != clientes.ClienteId).Any();
+        var ClientesRnc = clientesBLL.Listar(c => c.Rnc == clientes.Rnc && c.ClienteId != clientes.ClienteId).Any();
+
+        if (ClientesNombres)
+        {
+            nombreExistente = true;
+            return false;
+        }
+        if (ClientesRnc)
+        {
+            rncExistente = true;
+            return false;
+        }
+
+        return !string.IsNullOrEmpty(clientes.Nombres) && !string.IsNullOrEmpty(clientes.Rnc);
+    }
+    public void Nuevo()
+    {
+        this.clientes = new Clientes();
+        nombreExistente = false;
+        rncExistente = false;
+    }
+    public void Guardar()
+    {
+        if (Validar() && clientesBLL.Guardar(this.clientes))
+        {
+            Nuevo();
+        }
+    }
+    public void Eliminar()
+    {
+        clientesBLL.Eliminar(this.clientes);
+        Nuevo();
+    }
+}

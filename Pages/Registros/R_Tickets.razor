@@ -1,0 +1,137 @@
+﻿@page "/RegistroTicket";
+@page "/RegistroTicket/{TicketId:int}";
+
+@inject TicketsBLL ticketsBLL;
+@inject ClientesBLL clientesBLL;
+@inject SistemasBLL sistemasBLL;
+@inject PrioridadesBLL prioridadesBLL;
+
+<EditForm Model="tickets" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro Ticket</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <label>TicketID:</label>
+                <div class="input-group col-md-6">
+                    <InputNumber @bind-Value="tickets.TicketId" class="id-input"></InputNumber>
+                    <button type="button" class="btn btn-dark oi oi-magnifying-glass" @onclick="Buscar"></button>
+                </div>
+                <div class="col-md-6">
+                    <label>Fecha:</label>
+                    <InputDate @bind-Value="tickets.Fecha" class="form-control"></InputDate>
+                    <ValidationMessage For="@(() => tickets.Fecha)" />
+                </div>
+                <div class="col-md-6">
+                    <label>ClienteID:</label>
+                    <InputNumber @bind-Value="tickets.ClienteId" class="form-control"></InputNumber>
+                    <ValidationMessage For="@(() => tickets.ClienteId)" />
+                    @if (idCliente)
+                    {
+                        <p class="text-danger">Este ID no Se Encuentra Registrado</p>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label>SistemaID:</label>
+                    <InputNumber @bind-Value="tickets.SistemaId" class="form-control"></InputNumber>
+                    <ValidationMessage For="@(() => tickets.SistemaId)" />
+                    @if (idSistema)
+                    {
+                        <p class="text-danger">Este ID no Se Encuentra Registrado</p>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label>PrioridadID:</label>
+                    <InputNumber @bind-Value="tickets.PrioridadId" class="form-control"></InputNumber>
+                    <ValidationMessage For="@(() => tickets.PrioridadId)" />
+                    @if (idPrioridad)
+                    {
+                        <p class="text-danger">Este ID no Se Encuentra Registrado</p>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label>SolicitadoPor:</label>
+                    <InputText @bind-Value="tickets.SolicitadoPor" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => tickets.SolicitadoPor)" />
+                </div>
+                <div class="col-md-6">
+                    <label>Asunto:</label>
+                    <InputText @bind-Value="tickets.Asunto" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => tickets.Asunto)" />
+                </div>
+                <div class=" col-md-6">
+                    <label>Descripcion:</label>
+                    <InputText @bind-Value="tickets.Descripcion" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => tickets.Descripcion)" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo <i class="oi oi-file" /></button>
+            <button class="btn btn-success">Guardar <i class="oi oi-document" /></button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar <i class="oi oi-trash" /></button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int TicketId { get; set; }
+    public Tickets tickets = new Tickets();
+    public bool idCliente = false;
+    public bool idSistema = false;
+    public bool idPrioridad = false;
+
+    protected override void OnInitialized()
+    {
+        if (TicketId > 0)
+        {
+            tickets.TicketId = TicketId;
+            Buscar();
+        }
+    }
+    public void Buscar()
+    {
+        var ticketEncontrado = ticketsBLL.Buscar(tickets.TicketId);
+
+        if (ticketEncontrado != null)
+        {
+            //asignar la instancia si encontramos el ClienteId que buscamos
+            this.tickets = ticketEncontrado;
+        }
+        else
+        {
+            //para si no encuentra clientes limpie la pantalla
+            this.Nuevo();
+        }
+    }
+    public bool Validar()
+    {
+        idCliente = !(clientesBLL.Listar(c => c.ClienteId == tickets.ClienteId).Any());
+        idSistema = !(sistemasBLL.Listar(c => c.SistemaId == tickets.SistemaId).Any());
+        idPrioridad = !(prioridadesBLL.Listar(c => c.PrioridadId == tickets.PrioridadId).Any());
+
+        return idCliente || idSistema || idPrioridad;
+    }
+    public void Nuevo()
+    {
+        this.tickets = new Tickets();
+        idCliente = false;
+        idSistema = false;
+        idPrioridad = false;
+    }
+    public void Guardar()
+    {
+        if (!Validar() && ticketsBLL.Guardar(this.tickets))
+        {
+            Nuevo();
+        }
+    }
+    public void Eliminar()
+    {
+        ticketsBLL.Eliminar(this.tickets);
+        Nuevo();
+    }
+}
