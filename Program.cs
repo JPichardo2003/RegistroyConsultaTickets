@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
+using TicketsApp.DAL;
+using TicketsApp.BLL;
 
 namespace TicketsApp
 {
@@ -12,6 +15,17 @@ namespace TicketsApp
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
+
+            var ConStr = builder.Configuration.GetConnectionString("ConStr");
+
+            builder.Services.AddDbContext<Contexto>(options => options.UseSqlite(ConStr));
+
+            builder.Services.AddScoped<ClientesBLL>();
+            builder.Services.AddScoped<TicketsBLL>();
+            builder.Services.AddScoped<PrioridadesBLL>();
+            builder.Services.AddScoped<SistemasBLL>();
+
+            //builder.Services.AddScoped<>();
 
             var app = builder.Build();
 
