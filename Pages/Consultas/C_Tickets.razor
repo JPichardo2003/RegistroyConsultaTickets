@@ -1,0 +1,66 @@
+﻿@page "/ConsultaTickets"
+@inject TicketsBLL ticketsBLL
+
+<label>Filtrar por ID</label>
+<div class="input-group filter-input">
+    <InputNumber @bind-Value="filtrar" class="form-control"></InputNumber>
+    <div class="input-group-append">
+        <button type="button" class="btn btn-dark oi oi-magnifying-glass" @onclick="Buscar"></button>
+        <button type="button" class="btn btn-dark oi oi-reload" @onclick="Reiniciar"></button>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>TicketID</th>
+                <th>Fecha</th>
+                <th>Cliente ID</th>
+                <th>Sistema ID</th>
+                <th>Prioridad ID</th>
+                <th>Solicitado Por</th>
+                <th>Asunto</th>
+                <th>Descripcion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ListaTickets)
+            {
+                <tr>
+                    <td>@item.TicketId</td>
+                    <td>@item.Fecha</td>
+                    <td><a href="RegistroCliente/@item.ClienteId">@item.ClienteId</a></td>
+                    <td><a href="RegistroSistema/@item.SistemaId">@item.SistemaId</a></td>
+                    <td><a href="RegistroPrioridades/@item.PrioridadId">@item.PrioridadId</a></td>
+                    <td>@item.SolicitadoPor</td>
+                    <td>@item.Asunto</td>
+                    <td>@item.Descripcion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+
+    public Tickets tickets { get; set; } = new Tickets();
+    public int filtrar { get; set; }
+    public List<Tickets> ListaTickets { get; set; } = new List<Tickets>();
+
+    protected override void OnInitialized()
+    {
+        ListaTickets = ticketsBLL.Listar(l => true);
+    }
+
+    public void Buscar()
+    {
+        ListaTickets = ticketsBLL.Listar(l => l.ClienteId == filtrar);
+    }
+
+    public void Reiniciar()
+    {
+        ListaTickets = ticketsBLL.Listar(l => true);
+    }
+}
