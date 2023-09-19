@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj": {}
+    "C:\\Blazor\\TicketsApp\\TicketsApp.csproj": {}
   },
   "projects": {
-    "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj": {
+    "C:\\Blazor\\TicketsApp\\TicketsApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj",
+        "projectUniqueName": "C:\\Blazor\\TicketsApp\\TicketsApp.csproj",
         "projectName": "TicketsApp",
-        "projectPath": "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj",
+        "projectPath": "C:\\Blazor\\TicketsApp\\TicketsApp.csproj",
         "packagesPath": "C:\\Users\\julio\\.nuget\\packages\\",
-        "outputPath": "C:\\Blazor\\TicketsApp - copia\\obj\\",
+        "outputPath": "C:\\Blazor\\TicketsApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qgqFR5Bety2tryXpd16yptTuM4hzT8V0b2hDNLlboKFLEki6e5JxIn21XMRRxE4OcyigCp1A+0fjJzb4Cg/vFA==",
+  "dgSpecHash": "/GU6h51nBWCbWARLHdOinuDY+y3v6mDaKuCEye5Uq+QDg169DN1WLp/JRe6JthaJ2rLK0CsGF6pOy+JHxj8+ww==",
   "success": true,
-  "projectFilePath": "C:\\Blazor\\TicketsApp - copia\\TicketsApp.csproj",
+  "projectFilePath": "C:\\Blazor\\TicketsApp\\TicketsApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\julio\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\julio\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.11\\microsoft.data.sqlite.core.7.0.11.nupkg.sha512",

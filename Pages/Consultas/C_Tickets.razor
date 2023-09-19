@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>@item.TicketId</td>
-                    <td>@item.Fecha</td>
+                    <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
                     <td><a href="RegistroCliente/@item.ClienteId">@item.ClienteId</a></td>
                     <td><a href="RegistroSistema/@item.SistemaId">@item.SistemaId</a></td>
                     <td><a href="RegistroPrioridades/@item.PrioridadId">@item.PrioridadId</a></td>
