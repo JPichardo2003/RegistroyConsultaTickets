@@ -1,6 +1,16 @@
 ﻿@page "/ConsultaTickets"
 @inject TicketsBLL ticketsBLL
 
+<div class="card-header row">
+    <div class="col-md-4">
+        <label>Desde: </label>
+        <InputDate @bind-Value="Desde" class="form-control id-input"></InputDate>
+    </div>
+    <div class="col-md-4">
+        <label>Hasta: </label>
+        <InputDate @bind-Value="Hasta" class="form-control id-input"></InputDate>
+    </div>
+</div>
 <label>Filtrar por ID</label>
 <div class="input-group filter-input">
     <InputNumber @bind-Value="filtrar" class="form-control"></InputNumber>
@@ -29,7 +39,7 @@
             {
                 <tr>
                     <td>@item.TicketId</td>
-                    <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@item.Fecha.ToString("MM/dd/yyyy")</td>
                     <td><a href="RegistroCliente/@item.ClienteId">@item.ClienteId</a></td>
                     <td><a href="RegistroSistema/@item.SistemaId">@item.SistemaId</a></td>
                     <td><a href="RegistroPrioridades/@item.PrioridadId">@item.PrioridadId</a></td>
@@ -49,14 +59,23 @@
     public int filtrar { get; set; }
     public List<Tickets> ListaTickets { get; set; } = new List<Tickets>();
 
+    public DateTime Desde { get; set; }
+    public DateTime Hasta { get; set; }
+
     protected override void OnInitialized()
     {
         ListaTickets = ticketsBLL.Listar(l => true);
+        Desde = DateTime.Now.AddMonths(-1);
+        Hasta = DateTime.Now;
     }
 
     public void Buscar()
     {
-        ListaTickets = ticketsBLL.Listar(l => l.ClienteId == filtrar);
+        //Busca si el id seleccionado esta entre las fechas del filtro
+        if (filtrar > 0)
+            ListaTickets = ticketsBLL.Listar(l => l.ClienteId == filtrar && l.Fecha >= Desde.Date && l.Fecha <= Hasta);
+        else  
+            ListaTickets = ticketsBLL.Listar(l => l.Fecha >= Desde.Date && l.Fecha <= Hasta);
     }
 
     public void Reiniciar()
