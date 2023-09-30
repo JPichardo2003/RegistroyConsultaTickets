@@ -110,8 +110,8 @@
     public bool Validar()
     {
         idCliente = !(clientesBLL.Listar(c => c.ClienteId == tickets.ClienteId).Any());
-        idSistema = !(sistemasBLL.Listar(c => c.SistemaId == tickets.SistemaId).Any());
-        idPrioridad = !(prioridadesBLL.Listar(c => c.PrioridadId == tickets.PrioridadId).Any());
+        idSistema = !(sistemasBLL.Listar(s => s.SistemaId == tickets.SistemaId).Any());
+        idPrioridad = !(prioridadesBLL.Listar(p => p.PrioridadId == tickets.PrioridadId).Any());
 
         return idCliente || idSistema || idPrioridad;
     }

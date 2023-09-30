@@ -10,13 +10,28 @@
         <label>Hasta: </label>
         <InputDate @bind-Value="Hasta" class="form-control id-input"></InputDate>
     </div>
-</div>
-<label>Filtrar por ID</label>
-<div class="input-group filter-input">
-    <InputNumber @bind-Value="filtrar" class="form-control"></InputNumber>
-    <div class="input-group-append">
-        <button type="button" class="btn btn-dark oi oi-magnifying-glass" @onclick="Buscar"></button>
-        <button type="button" class="btn btn-dark oi oi-reload" @onclick="Reiniciar"></button>
+    <label>Filtrar Por:</label>
+    <div class="col-md-6 input-group filter-input">
+        <InputSelect @bind-Value="filtrar" class="form-select">
+            <option value="0">Fecha</option>
+            <option value="1">Cliente Id</option>
+            <option value="2">Asunto</option>
+        </InputSelect>
+        <div class="input-group-append">
+            <button type="button" class="btn btn-dark oi oi-magnifying-glass" @onclick="Buscar"></button>
+            <button type="button" class="btn btn-dark oi oi-reload" @onclick="Reiniciar"></button>
+        </div>
+    </div>
+    <div class="col-md-6">
+        @switch (filtrar)
+        {
+            case 1:
+                <InputNumber @bind-Value="tickets.ClienteId" class="form-control"></InputNumber>
+                break;
+            case 2:
+                <InputText @bind-Value="tickets.Asunto" class="form-control"></InputText>
+            break;
+        }
     </div>
 </div>
 
@@ -72,10 +87,12 @@
     public void Buscar()
     {
         //Busca si el id seleccionado esta entre las fechas del filtro
-        if (filtrar > 0)
-            ListaTickets = ticketsBLL.Listar(l => l.ClienteId == filtrar && l.Fecha >= Desde.Date && l.Fecha <= Hasta);
-        else  
+        if (filtrar == 0)
             ListaTickets = ticketsBLL.Listar(l => l.Fecha >= Desde.Date && l.Fecha <= Hasta);
+        if (filtrar == 1)
+            ListaTickets = ticketsBLL.Listar(l => l.ClienteId == tickets.ClienteId && l.Fecha >= Desde.Date && l.Fecha <= Hasta);
+        if (filtrar == 2)  
+            ListaTickets = ticketsBLL.Listar(l => l.Asunto!.ToLower() == tickets.Asunto!.ToLower() && l.Fecha >= Desde.Date && l.Fecha <= Hasta);
     }
 
     public void Reiniciar()
